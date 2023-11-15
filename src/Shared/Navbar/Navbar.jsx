@@ -1,18 +1,64 @@
+import { NavLink } from "react-router-dom";
+
 const Navbar = () => {
   const links = (
     <>
-      <li>
-        <a className="text-white">Item 1</a>
+      <li className="mr-8">
+        <NavLink
+          to="/"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "text-orange-400" : ""
+          }
+        >
+          Home
+        </NavLink>
       </li>
-      <li>
-        <a className="text-white">Item 3</a>
+      <li className="mr-8">
+        <NavLink
+          to="/contactUs"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "text-orange-400" : ""
+          }
+        >
+          Contact Us
+        </NavLink>
+      </li>
+      <li className="mr-8">
+        <NavLink
+          to="/dashboard"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "text-orange-400" : ""
+          }
+        >
+          Dashboard
+        </NavLink>
+      </li>
+      <li className="mr-8">
+        <NavLink
+          to="/menu"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "text-orange-400" : ""
+          }
+        >
+          Our Menu
+        </NavLink>
+      </li>
+      <li className="mr-8">
+        <NavLink
+          to="/shop"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "text-orange-400" : ""
+          }
+        >
+          Our Shop
+        </NavLink>
       </li>
     </>
   );
   return (
     <div className="">
-      <div className="navbar fixed z-10 opacity-30 bg-black max-w-7xl">
-        <div className="navbar-start">
+      <div className="navbar fixed z-10 bg-opacity-30 bg-black max-w-7xl px-10">
+        <div className="navbar-start ">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
               <svg
@@ -37,13 +83,10 @@ const Navbar = () => {
               {links}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl text-white">Bistro Boss</a>
+          <a className=" text-xl text-white">Bistro Boss</a>
         </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 text-white z-10">{links}</ul>
-        </div>
-        <div className="navbar-end">
-          <a className="btn">Button</a>
+        <div className="navbar-end hidden lg:flex">
+          <ul className="menu-horizontal px-1 text-white">{links}</ul>
         </div>
       </div>
     </div>
