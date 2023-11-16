@@ -45,12 +45,22 @@ const Navbar = () => {
       </li>
       <li className="mr-8">
         <NavLink
-          to="/shop"
+          to="/shop/salad"
           className={({ isActive, isPending }) =>
             isPending ? "pending" : isActive ? "text-orange-400" : ""
           }
         >
           Our Shop
+        </NavLink>
+      </li>
+      <li className="mr-8">
+        <NavLink
+          to="/login"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "text-orange-400" : ""
+          }
+        >
+          Login
         </NavLink>
       </li>
     </>
