@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import img2 from "../../assets/others/authentication1.png";
+import { FcGoogle } from "react-icons/fc";
 import {
   loadCaptchaEnginge,
   LoadCanvasTemplate,
@@ -7,10 +8,18 @@ import {
 } from "react-simple-captcha";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../Provider/AuthProvider/AuthProvider";
+import { Helmet } from "react-helmet-async";
+import Swal from "sweetalert2";
+import { axiosPublic } from "../../Hooks/useAxiosPublic/useAxiosPublic";
 const Login = () => {
-  const { loginUSer } = useContext(AuthContext);
+  const { loginUSer, googleSignIn } = useContext(AuthContext);
   const captchaRef = useRef(null);
   const [disabled, setDisabled] = useState(true);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -18,7 +27,7 @@ const Login = () => {
   const handleCaptcha = () => {
     const user_captcha_value = captchaRef.current.value;
     console.log(user_captcha_value);
-    if (validateCaptcha(user_captcha_value) == true) {
+    if (validateCaptcha(user_captcha_value) === true) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -32,10 +41,30 @@ const Login = () => {
 
     loginUSer(email, password)
       .then((res) => {
+        Swal.fire("Logged in successfully");
         console.log(res.user);
+        navigate(from, { replace: true });
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then((res) => {
+        console.log(res.user);
+        const userInfo = {
+          name: res.user.displayName,
+          email: res.user.email,
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          console.log(res.data);
+          navigate("/");
+        });
+      })
+      .catch((error) => {
+        console.log("google sign Up :", error);
       });
   };
   return (
@@ -48,6 +77,9 @@ const Login = () => {
       //   }}
       className="h-max"
     >
+      <Helmet>
+        <title>Bistro Boss | Login</title>
+      </Helmet>
       <div className="flex justify-between items-center gap-10">
         <div className="w-1/2">
           <img src={img2} alt="" />
@@ -106,6 +138,12 @@ const Login = () => {
                 className="input input-bordered w-full bg-[#D1A054B2] text-white uppercase mt-6"
                 value="Submit"
               />
+              <button
+                onClick={handleGoogleSignIn}
+                className="w-full flex justify-center items-center gap-1 border-2 border-gray rounded-lg py-2 mt-10 mb-3 text-base"
+              >
+                <FcGoogle className="text-xl" /> Sign up With Google
+              </button>
               <div>
                 <p className="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-yellow-500 antialiased">
                   New user?{" "}
